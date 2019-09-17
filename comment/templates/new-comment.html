@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-lang">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trotter</title>
+</head>
+<style>
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        overflow: auto;
+    }
+
+    body {
+        max-width: 600px;
+        padding: 10px;
+        margin: 0 auto;
+    }
+</style>
+
+<body>
+
+    <div>
+        您有一条待处理的评论信息：
+        <blockquote>
+            <p>{{message}}</p>
+        </blockquote>
+        <a href="{{website}}/{{page_uri}}">查看</a>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+runtime: python3
+tasks:
+  - pip: flask
+    local: true

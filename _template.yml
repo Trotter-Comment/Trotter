@@ -1,0 +1,57 @@
+ROSTemplateFormatVersion: '2015-09-01'
+Transform: 'Aliyun::Serverless-2018-04-03'
+Resources:
+  Trotter:
+    Type: 'Aliyun::Serverless::Service'
+    Properties:
+      Description: 'serverless comment'
+      InternetAccess: true
+    Trotter:
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Initializer: comment.views.init
+        InitializationTimeout: 10
+        Handler: comment.app
+        Runtime: python3
+        CodeUri: './'
+        EnvironmentVariables:
+          WEBSITE: 'your website link like https://abersheeran.com'
+          OSS_BUCKET: 'your bucket name'
+          OSS_KEYID: ''
+          OSS_SECRET: ''
+          OSS_LINK: 'https://oss-cn-hongkong.aliyuncs.com'
+      Events:
+        httpTrigger:
+          Type: HTTP
+          Properties:
+            AuthType: ANONYMOUS
+            Methods: ['POST', 'GET']
+    SendMail:
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Initializer: sendmail.init
+        InitializationTimeout: 10
+        Handler: sendmail.handler
+        Timeout: 60
+        Runtime: python3
+        CodeUri: './'
+        EnvironmentVariables:
+          OSS_BUCKET: 'your bucket name'
+          OSS_KEYID: ''
+          OSS_SECRET: ''
+          OSS_LINK: 'https://oss-cn-hongkong.aliyuncs.com'
+          EMAIL_SERVER_HOST: 'smtp server'
+          EMAIL_SERVER_PORT: port
+          EMAIL_USERNAME: 'your email username'
+          EMAIL_PASSWORD: 'your email password'
+      Events:
+        SendMail:
+          Type: OSS
+          Properties:
+            BucketName: your bucket name
+            Events:
+              - oss:ObjectCreated:*
+            Filter:
+              Key:
+                  Prefix: mail/
+                  Suffix: .task
