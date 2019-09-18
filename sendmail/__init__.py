@@ -23,14 +23,14 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 smtpObj = None
 
 
-def sendmail(nickname: str, to_email: str, content: str) -> typing.Tuple[bool, typing.Union[None, str]]:
+def sendmail(nickname: str, to_email: str, subject: str, content: str) -> typing.Tuple[bool, typing.Union[None, str]]:
     """发送邮件通知"""
     global smtpObj
 
     message = MIMEText(content, 'html', 'utf-8')
     message['From'] = Header(f"Trotter<{EMAIL_USERNAME}>", 'utf-8')
     message['To'] = Header(f'{nickname}<{to_email}>', 'utf-8')
-    message['Subject'] = Header("你在 Trotter 上的评论有新的回复", 'utf-8')
+    message['Subject'] = Header(subject, 'utf-8')
 
     try:
         smtpObj.sendmail(EMAIL_USERNAME, to_email, message.as_string())

@@ -20,6 +20,7 @@ Resources:
           OSS_KEYID: ''
           OSS_SECRET: ''
           OSS_LINK: 'https://oss-cn-hongkong.aliyuncs.com'
+          ADMIN_EMAIL: 'your email address'
       Events:
         httpTrigger:
           Type: HTTP

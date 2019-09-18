@@ -8,7 +8,7 @@ from flask import (
 )
 import oss2
 
-from .settings import OSS_BUCKET, OSS_KEYID, OSS_SECRET, OSS_LINK, WEBSITE
+from .settings import OSS_BUCKET, OSS_KEYID, OSS_SECRET, OSS_LINK, WEBSITE, ADMIN_EMAIL
 from .utils import route, View, ranstr, get_avatar
 
 
@@ -55,7 +55,8 @@ class Comment(View):
         bucket.put_object(f'comment/{key}', pickle.dumps(comment))
         bucket.put_object(f'mail/{key}.task', pickle.dumps({
             "nickname": nickname,
-            "to_email": email,
+            "to_email": ADMIN_EMAIL,
+            "subject": "你的网站在 Trotter 上有一条新评论",
             "content": render_template(
                 'new-comment.html',
                 message=content,

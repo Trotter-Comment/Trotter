@@ -15,3 +15,6 @@ assert OSS_SECRET, "OSS_SECRET must be set in os.environ"
 
 OSS_LINK = os.environ.get("OSS_LINK")
 assert OSS_LINK, "OSS_LINK must be set in os.environ"
+
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL")
+assert ADMIN_EMAIL, "ADMIN_EMAIL must be set in os.environ"
