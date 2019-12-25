@@ -28,8 +28,11 @@ def init(context):
 class Comment(View):
 
     def get(self):
+        page_uri = request.args["page-uri"]
         marker = request.args.get('marker', '')
-        result = bucket.list_objects("comment/", max_keys=10, marker=marker)
+        count = request.args.get("count", 10)
+
+        result = bucket.list_objects(f"comment/{page_uri}/", max_keys=count, marker=marker)
         comments = []
         for obj in result.object_list:
             comment = pickle.loads(bucket.get_object(obj.key).read())
@@ -41,19 +44,26 @@ class Comment(View):
             "next_marker": result.next_marker,
         })
 
+
     def post(self):
         page_uri = request.form['page-uri']
         nickname = request.form['nickname']
         email = request.form['email']
         content = request.form['content']
-        time = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-        avatar = get_avatar(email)
-        key = ranstr()
-        comment = dict(**locals())
-        del comment['self']
 
-        bucket.put_object(f'comment/{key}', pickle.dumps(comment))
-        bucket.put_object(f'mail/{key}.task', pickle.dumps({
+        key = ranstr()
+        comment = {
+            "key": key,
+            "page-uri": page_uri,
+            "nickname": nickname,
+            "email": email,
+            "avatar": get_avatar(email),
+            "content": content,
+            "time": datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+        }
+
+        bucket.put_object(f'comment/{page_uri}/{key}', pickle.dumps(comment))
+        bucket.put_object(f'mail/admin-{key}.task', pickle.dumps({
             "nickname": nickname,
             "to_email": ADMIN_EMAIL,
             "subject": "你的网站在 Trotter 上有一条新评论",

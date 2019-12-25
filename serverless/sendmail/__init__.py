@@ -23,7 +23,7 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 smtpObj = None
 
 
-def sendmail(nickname: str, to_email: str, subject: str, content: str) -> typing.Tuple[bool, typing.Union[None, str]]:
+def sendmail(nickname: str, to_email: str, subject: str, content: str) -> typing.Tuple[bool, typing.Optional[str]]:
     """发送邮件通知"""
     global smtpObj
 
